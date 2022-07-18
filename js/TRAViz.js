@@ -1749,9 +1749,8 @@ TRAViz.prototype.setConnections = function(){
 /**
  * In case of line breaks, dummys are inserted at the end and the start of a line to help connect adjacent vertices.
  */
-TRAViz.prototype.insertDummys = function(){
+TRAViz.prototype.insertDummys = function(width){
 	var gap = 3*this.curveRadius;
-	var width = $('#'+this.div).width();
 	var sortByX = function(v1,v2){
 		if( v1.x1 < v2.x1 ){
 			return -1;
@@ -2074,8 +2073,9 @@ TRAViz.prototype.calculateTranspositions = function(){
  * Main funtion to be called to visualize the computed Text Variant Graph.
  */
 TRAViz.prototype.visualize = function(){
+	var origDivWidth = $('#'+this.div).width();
 	if( this.config.options.lineBreaks ){
-		if( $('#'+this.div).width() == 0 ){
+		if( origDivWidth == 0 ){
 			this.config.options.lineBreaks = false;
 			alert('Please check the width of your container div!');
 		}
@@ -2470,7 +2470,7 @@ TRAViz.prototype.visualize = function(){
 		}
 	}
 	if( this.config.options.lineBreaks ){
-		this.insertDummys();
+		this.insertDummys(origDivWidth);
 	}
 	var ln = this.layers.length;
 	for( var i=0; i<this.vertices.length; i++ ){
@@ -2619,7 +2619,7 @@ TRAViz.prototype.visualize = function(){
 	var w = x_max - x_min;
 	var h = y_max - y_min;
 	if( this.config.options.lineBreaks ){
-		w = $('#'+this.div).width();
+		w = origDivWidth;
 	}
 	this.paper = r;
 	for( var i=0; i<this.layout.length; i++ ){
