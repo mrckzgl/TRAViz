@@ -9,10 +9,7 @@ task :default => :all
 task :all => [COMPRESSED_OUTPUT_FILE, OUTPUT_FILE]
 
 # javascript sources
-Files = %w(lib/jquery.min.js
-lib/jquery.qtip.min.js
-lib/raphael.js
-js/TRAVizConnection.js
+Files = %w(js/TRAVizConnection.js
 js/TRAVizGraph.js
 js/TRAVizAligner.js
 js/TRAViz.js
