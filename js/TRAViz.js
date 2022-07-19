@@ -2354,7 +2354,7 @@ TRAViz.prototype.visualize = function(){
 			var v = paths[i][j];
 			var fs = this.config.options.fontSizeMin + this.config.options.fontSizeIncrease*(v.count-1);
 			if( this.config.options.interpolateFontSize ){
-				fs = this.config.options.fontSizeMin + (v.count-1)/(maxLabel-1) * (this.config.options.fontSizeMax - this.config.options.fontSizeMin);
+				fs = this.config.options.fontSizeMin + (maxLabel === 1 ? 0 : ((v.count-1)/(maxLabel-1))) * (this.config.options.fontSizeMax - this.config.options.fontSizeMin);
 			}
 			$(helperDiv).html(v.token);
 			$(helperDiv).css("font",fs+"px "+this.config.options.font);
@@ -2651,17 +2651,18 @@ TRAViz.prototype.visualize = function(){
 	for( var i=0; i<this.layout.length; i++ ){
 		var v = this.layout[i];
 		if( v != this.startVertex && v != this.endVertex && v.token != '' && this.config.options.vertexBackground ){
+			var x = (v.x1 > v.x2) ? v.x2 : v.x1;
 			if( v.count > this.config.options.collapseLabels ){
-				v.rect = r.rect(v.x1+3,v.y1,v.x2-v.x1-6,v.y2-v.y1,5).attr({fill: this.config.options.vertexBackground, "stroke": "none" });
+				v.rect = r.rect(x+3,v.y1,Math.abs(v.x2-v.x1)-6,v.y2-v.y1,5).attr({fill: this.config.options.vertexBackground, "stroke": "none" });
 			}
 			else {
-				v.rect = r.rect(v.x1+3,v.y1,v.x2-v.x1-6,v.y2-v.y1,5).attr({title: v.token, fill: this.config.options.vertexBackground, "stroke": "none" });
+				v.rect = r.rect(x+3,v.y1,Math.abs(v.x2-v.x1)-6,v.y2-v.y1,5).attr({title: v.token, fill: this.config.options.vertexBackground, "stroke": "none" });
 			}
 		}
 		if( v.count > this.config.options.collapseLabels ){
 			var fs = this.config.options.fontSizeMin + this.config.options.fontSizeIncrease*(v.count-1);
 			if( this.config.options.interpolateFontSize ){
-				fs = this.config.options.fontSizeMin + (v.count-1)/(maxLabel-1) * (this.config.options.fontSizeMax - this.config.options.fontSizeMin);
+				fs = this.config.options.fontSizeMin + (maxLabel === 1 ? 0 : ((v.count-1)/(maxLabel-1))) * (this.config.options.fontSizeMax - this.config.options.fontSizeMin);
 			}
 			v.fs = fs;
 			v.textNode = r.text(( v.x1 + v.x2 )/2, ( v.y1 + v.y2 )/2, v.token).attr({font: fs+"px "+this.config.options.font,fill:this.config.options.baseColor,"text-anchor":"middle","cursor":"pointer"});
